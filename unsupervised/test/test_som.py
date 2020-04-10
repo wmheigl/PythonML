@@ -26,11 +26,11 @@ class TestSOM(unittest.TestCase):
         self.assertEqual(som.iterations, iterations, "Actual no. of iterations not equal to expected")
 
     def test_learn(self):
-        shape = (10, 15, 7)
+        shape = (1, 0, 0)
         learning_rate = 0.01
         iterations = 200
         som = SelfOrganizingMap(shape, learning_rate, iterations)
-        som.learn(data)
+        som.learn(data=None)
 
 if __name__ == "__main__":
     # import sys;sys.argv = ['', 'Test.testName']

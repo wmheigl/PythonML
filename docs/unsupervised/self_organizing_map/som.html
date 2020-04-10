@@ -1,0 +1,822 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.5" />
+<title>unsupervised.self_organizing_map.som API documentation</title>
+<meta name="description" content="Created on Apr 2, 2020 …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>unsupervised.self_organizing_map.som</code></h1>
+</header>
+<section id="section-intro">
+<p>Created on Apr 2, 2020</p>
+<p>@author: W. M. Heigl</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+Created on Apr 2, 2020
+
+@author: W. M. Heigl
+&#39;&#39;&#39;
+import numpy as np
+import matplotlib.pyplot as plt
+import sys
+
+# exported names at module level
+__all__ = [&#39;SelfOrganizingMap&#39;]
+
+
+class SelfOrganizingMap(object):
+    &#34;&#34;&#34;A self-organizing map.
+    
+    A self-organizing map (SOM) is a type of neural network in which the neurons
+    are conceptually arranged in a 2D rectangular grid. In contrast with
+    layer-based neural networks the neurons in a SOM are not connected to each
+    other, only to the input.
+    
+    Its primary purpose is to find structure in datasets in which the individual
+    data items consist of higher-dimensional feature vectors and display it in a
+    2-dimensional map. Basically, one wants to know whether the feature vectors
+    form clusters in their vector space. The n dimensions of the vector space get
+    reduced to two in such a way that vectors close to each other in the multi-
+    dimensional space are also close to each other in the SOM, i.e. map onto 
+    nearby neurons.
+    &#34;&#34;&#34;
+
+    def __init__(self, shape=(0, 0, 0), learning_rate=0.01, iterations=200):
+        &#34;&#34;&#34;Initializes a self-organizing map.
+        
+        The number of neurons in the network is shape[0]*shape[1]. Every node
+        has shape[2] weights (equal to the number of features).
+        
+        Arguments:
+        ----------
+            shape : Tuple
+                The size of the network is (rows, cols, weights)
+            learning_rate : Float
+                The learning rate of the network.
+            iterations : Integer
+                The number of iterations to train the network.
+        &#34;&#34;&#34;
+        self.__shape = shape
+        self.__learning_rate = learning_rate
+        self.__iterations = iterations
+        # the &#39;state&#39; of an instance during learning
+        self.__weights = np.random.random(shape)
+        # various measures of progress during learning
+        self.__history = {&#39;radius&#39; : [], &#39;learn_rate&#39; : [], &#39;bmu_distance&#39; : []}
+
+    @property
+    def history(self):
+        return self.__history
+
+    @property
+    def iterations(self):
+        return self.__iterations
+
+    @property
+    def learning_rate(self):
+        return self.__learning_rate
+    
+    @property
+    def shape(self):
+        return self.__shape
+    
+    @property
+    def weights(self):
+        return self.__weights
+
+    def learn(self, data):
+        &#34;&#34;&#34;Trains the SOM using the provided data.
+        
+        Arguments:
+            data : NumPy ndarray
+                The data as a 2D NumPy array consisting of rows of feature vectors.
+            
+        Returns
+        ----------
+        bmu_idx_list : List
+            A list of BMU indices
+        distance_list : List
+            A list of squared distances
+        radius_list : List
+        
+        learn_rate_list : List
+            The data as a 2D NumPy array consisting of rows of feature vectors.
+        &#34;&#34;&#34;
+        if all(v == 0 for v in self.__shape):
+            print(f&#34;shape={self.__shape} -- nothing to be done&#34;)
+            return
+        if data is None:
+            print(f&#34;data={data} -- nothing to be done&#34;)
+            return
+        
+        bmu_idx_list = []
+        
+        # this is to save real estate
+        m = data.shape[0]   # no. of feature vectors
+        n = data.shape[1]   # no. of features
+        
+        initial_radius = max(self.__shape[0], self.__shape[1]) / 2
+        learning_rate = self.__learning_rate
+        time_constant = self.__iterations / np.log(initial_radius)
+
+        self.__history[&#39;radius&#39;].append(initial_radius)
+        self.__history[&#39;learn_rate&#39;].append(learning_rate)
+        
+        for i in range(self.__iterations):
+            if(i % 100 == 0):
+                print(&#39;iteration &#39;, i)
+            
+            # select a training example at random
+            t = data[np.random.randint(0, m)]
+#             t = data[i]
+
+            # find its Best Matching Unit
+            bmu, bmu_idx, dist = self.__find_bmu(t)
+            
+            bmu_idx_list.append(bmu_idx)
+            
+            # update the learning parameters
+            radius = initial_radius * np.exp(-i / time_constant)
+            radius_squared = radius ** 2
+            learning_rate = learning_rate * np.exp(-i / (2000 * self.__iterations))
+            
+            self.__history[&#39;radius&#39;].append(radius)
+            self.__history[&#39;learn_rate&#39;].append(learning_rate)
+            self.__history[&#39;bmu_distance&#39;].append(dist)
+            
+            # now we know the BMU, update its weight vector to move closer to input
+            # and move its neighbors closer too
+            # by a factor proportional to their 2-D distance from the BMU
+            for x in range(self.__weights.shape[0]):
+                for y in range(self.__weights.shape[1]):
+                    w = self.__weights[x, y, :]
+                    # get the squared Euclidean distance
+                    w_dist = np.sum((np.array([x, y]) - bmu_idx) ** 2)
+                    # if the distance is within the current neighbourhood radius
+                    if w_dist &lt;= radius_squared:
+                        # calculate the degree of neighborhood (based on the 2-D distance)
+#                         neighborhood = self.__calculate_influence(w_dist, radius)
+                        neighborhood = np.exp(-w_dist / (2 * radius_squared))
+                        # now update the neuron&#39;s weight using the formula:
+                        # new w = old w + (learning rate * neighborhood * delta)
+                        # where delta = input vector (t) - old w
+                        new_w = w + (learning_rate * neighborhood * (t - w))
+                        # commit the new weight
+                        self.__weights[x, y, :] = new_w
+                        
+        return bmu_idx_list
+
+    def __find_bmu(self, t):
+        &#34;&#34;&#34;Finds the best matching unit BMU in the SOM for the feature vector t.
+        
+        Parameters
+        ------------
+        t : ndarray
+            The feature vector.
+            
+        Returns
+        ---------
+        (bmu, bmu_idx, min_dist) : tuple
+            A tuple where bmu contains the weights of the BMU, bmu_idx its
+            location in the SOM, and min_dist between the input vector and
+            the weights of the BMU
+        &#34;&#34;&#34;
+        bmu_idx = np.array([0, 0])
+        # set the initial minimum distance to a huge number
+        min_dist = np.iinfo(np.int).max
+        # calculate the high-dimensional distance between each neuron and the input
+        for x in range(self.__weights.shape[0]):
+            for y in range(self.__weights.shape[1]):
+                w = self.__weights[x, y, :]
+                # don&#39;t bother with actual Euclidean distance, to avoid expensive sqrt operation
+                square_dist = np.sum((w - t) ** 2)
+#                 square_dist = np.sum(np.abs(w - t)) # L1 norm
+                if square_dist &lt; min_dist:
+                    min_dist = square_dist
+#                     bmu_idx = np.array([x, y])
+                    np.put(bmu_idx, [0, 1], [x, y])
+        # get vector corresponding to bmu_idx
+        bmu = self.__weights[bmu_idx[0], bmu_idx[1], :]
+        # return the (bmu, bmu_idx) tuple
+        return (bmu, bmu_idx, min_dist)
+
+    def plot_history(self, title=&#39;Learning History&#39;, show_plot=False):
+        &#34;&#34;&#34;Plots learning history
+    
+        Arguments:
+            title : String
+                Title of the plot.
+            show_plot : Bool
+                Calls plt.show() if True.
+        &#34;&#34;&#34;
+        n_plots = len(self.__history)
+        figure, axis = plt.subplots(nrows=1, ncols=n_plots, figsize=(2 * 6.4, 4.8), constrained_layout=True)
+        figure.suptitle(title)
+        index = 0
+        for key in self.__history:
+            axis[index].plot(self.__history[key])
+            axis[index].set_title(key)
+#             axis[index].get_xaxis().set_visible(False)
+#             axis[index].get_yaxis().set_visible(False)
+            index += 1
+        if show_plot is True:
+            plt.show()
+        
+    def plot_weights(self, labels=None, title=&#39;SOM Model Components&#39;, show_plot=False):
+        &#34;&#34;&#34;Plots SOM weights (model components) as images.
+    
+        Arguments:
+            labels : NumPy ndarray
+                Feature labels.
+            title : String
+                Title of the plot.
+            show_plot : Bool
+                Calls plt.show() if True.
+        &#34;&#34;&#34;
+        n_plots = self.__shape[2]
+        figure, axes = plt.subplots(nrows=1, ncols=n_plots, figsize=(2 * 6.4, 4.8), constrained_layout=True)
+        figure.suptitle(title)
+        for index in range(n_plots):
+            axes[index].imshow(self.__weights[:, :, index])
+            if labels is None:
+                axes[index].set_title(index)
+            else:
+                axes[index].set_title(labels[index])          
+        if show_plot is True:
+            plt.show()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="unsupervised.self_organizing_map.som.SelfOrganizingMap"><code class="flex name class">
+<span>class <span class="ident">SelfOrganizingMap</span></span>
+<span>(</span><span>shape=(0, 0, 0), learning_rate=0.01, iterations=200)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A self-organizing map.</p>
+<p>A self-organizing map (SOM) is a type of neural network in which the neurons
+are conceptually arranged in a 2D rectangular grid. In contrast with
+layer-based neural networks the neurons in a SOM are not connected to each
+other, only to the input.</p>
+<p>Its primary purpose is to find structure in datasets in which the individual
+data items consist of higher-dimensional feature vectors and display it in a
+2-dimensional map. Basically, one wants to know whether the feature vectors
+form clusters in their vector space. The n dimensions of the vector space get
+reduced to two in such a way that vectors close to each other in the multi-
+dimensional space are also close to each other in the SOM, i.e. map onto
+nearby neurons.</p>
+<p>Initializes a self-organizing map.</p>
+<p>The number of neurons in the network is shape[0]*shape[1]. Every node
+has shape[2] weights (equal to the number of features).</p>
+<h2 id="arguments">Arguments:</h2>
+<pre><code>shape : Tuple
+    The size of the network is (rows, cols, weights)
+learning_rate : Float
+    The learning rate of the network.
+iterations : Integer
+    The number of iterations to train the network.
+</code></pre></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SelfOrganizingMap(object):
+    &#34;&#34;&#34;A self-organizing map.
+    
+    A self-organizing map (SOM) is a type of neural network in which the neurons
+    are conceptually arranged in a 2D rectangular grid. In contrast with
+    layer-based neural networks the neurons in a SOM are not connected to each
+    other, only to the input.
+    
+    Its primary purpose is to find structure in datasets in which the individual
+    data items consist of higher-dimensional feature vectors and display it in a
+    2-dimensional map. Basically, one wants to know whether the feature vectors
+    form clusters in their vector space. The n dimensions of the vector space get
+    reduced to two in such a way that vectors close to each other in the multi-
+    dimensional space are also close to each other in the SOM, i.e. map onto 
+    nearby neurons.
+    &#34;&#34;&#34;
+
+    def __init__(self, shape=(0, 0, 0), learning_rate=0.01, iterations=200):
+        &#34;&#34;&#34;Initializes a self-organizing map.
+        
+        The number of neurons in the network is shape[0]*shape[1]. Every node
+        has shape[2] weights (equal to the number of features).
+        
+        Arguments:
+        ----------
+            shape : Tuple
+                The size of the network is (rows, cols, weights)
+            learning_rate : Float
+                The learning rate of the network.
+            iterations : Integer
+                The number of iterations to train the network.
+        &#34;&#34;&#34;
+        self.__shape = shape
+        self.__learning_rate = learning_rate
+        self.__iterations = iterations
+        # the &#39;state&#39; of an instance during learning
+        self.__weights = np.random.random(shape)
+        # various measures of progress during learning
+        self.__history = {&#39;radius&#39; : [], &#39;learn_rate&#39; : [], &#39;bmu_distance&#39; : []}
+
+    @property
+    def history(self):
+        return self.__history
+
+    @property
+    def iterations(self):
+        return self.__iterations
+
+    @property
+    def learning_rate(self):
+        return self.__learning_rate
+    
+    @property
+    def shape(self):
+        return self.__shape
+    
+    @property
+    def weights(self):
+        return self.__weights
+
+    def learn(self, data):
+        &#34;&#34;&#34;Trains the SOM using the provided data.
+        
+        Arguments:
+            data : NumPy ndarray
+                The data as a 2D NumPy array consisting of rows of feature vectors.
+            
+        Returns
+        ----------
+        bmu_idx_list : List
+            A list of BMU indices
+        distance_list : List
+            A list of squared distances
+        radius_list : List
+        
+        learn_rate_list : List
+            The data as a 2D NumPy array consisting of rows of feature vectors.
+        &#34;&#34;&#34;
+        if all(v == 0 for v in self.__shape):
+            print(f&#34;shape={self.__shape} -- nothing to be done&#34;)
+            return
+        if data is None:
+            print(f&#34;data={data} -- nothing to be done&#34;)
+            return
+        
+        bmu_idx_list = []
+        
+        # this is to save real estate
+        m = data.shape[0]   # no. of feature vectors
+        n = data.shape[1]   # no. of features
+        
+        initial_radius = max(self.__shape[0], self.__shape[1]) / 2
+        learning_rate = self.__learning_rate
+        time_constant = self.__iterations / np.log(initial_radius)
+
+        self.__history[&#39;radius&#39;].append(initial_radius)
+        self.__history[&#39;learn_rate&#39;].append(learning_rate)
+        
+        for i in range(self.__iterations):
+            if(i % 100 == 0):
+                print(&#39;iteration &#39;, i)
+            
+            # select a training example at random
+            t = data[np.random.randint(0, m)]
+#             t = data[i]
+
+            # find its Best Matching Unit
+            bmu, bmu_idx, dist = self.__find_bmu(t)
+            
+            bmu_idx_list.append(bmu_idx)
+            
+            # update the learning parameters
+            radius = initial_radius * np.exp(-i / time_constant)
+            radius_squared = radius ** 2
+            learning_rate = learning_rate * np.exp(-i / (2000 * self.__iterations))
+            
+            self.__history[&#39;radius&#39;].append(radius)
+            self.__history[&#39;learn_rate&#39;].append(learning_rate)
+            self.__history[&#39;bmu_distance&#39;].append(dist)
+            
+            # now we know the BMU, update its weight vector to move closer to input
+            # and move its neighbors closer too
+            # by a factor proportional to their 2-D distance from the BMU
+            for x in range(self.__weights.shape[0]):
+                for y in range(self.__weights.shape[1]):
+                    w = self.__weights[x, y, :]
+                    # get the squared Euclidean distance
+                    w_dist = np.sum((np.array([x, y]) - bmu_idx) ** 2)
+                    # if the distance is within the current neighbourhood radius
+                    if w_dist &lt;= radius_squared:
+                        # calculate the degree of neighborhood (based on the 2-D distance)
+#                         neighborhood = self.__calculate_influence(w_dist, radius)
+                        neighborhood = np.exp(-w_dist / (2 * radius_squared))
+                        # now update the neuron&#39;s weight using the formula:
+                        # new w = old w + (learning rate * neighborhood * delta)
+                        # where delta = input vector (t) - old w
+                        new_w = w + (learning_rate * neighborhood * (t - w))
+                        # commit the new weight
+                        self.__weights[x, y, :] = new_w
+                        
+        return bmu_idx_list
+
+    def __find_bmu(self, t):
+        &#34;&#34;&#34;Finds the best matching unit BMU in the SOM for the feature vector t.
+        
+        Parameters
+        ------------
+        t : ndarray
+            The feature vector.
+            
+        Returns
+        ---------
+        (bmu, bmu_idx, min_dist) : tuple
+            A tuple where bmu contains the weights of the BMU, bmu_idx its
+            location in the SOM, and min_dist between the input vector and
+            the weights of the BMU
+        &#34;&#34;&#34;
+        bmu_idx = np.array([0, 0])
+        # set the initial minimum distance to a huge number
+        min_dist = np.iinfo(np.int).max
+        # calculate the high-dimensional distance between each neuron and the input
+        for x in range(self.__weights.shape[0]):
+            for y in range(self.__weights.shape[1]):
+                w = self.__weights[x, y, :]
+                # don&#39;t bother with actual Euclidean distance, to avoid expensive sqrt operation
+                square_dist = np.sum((w - t) ** 2)
+#                 square_dist = np.sum(np.abs(w - t)) # L1 norm
+                if square_dist &lt; min_dist:
+                    min_dist = square_dist
+#                     bmu_idx = np.array([x, y])
+                    np.put(bmu_idx, [0, 1], [x, y])
+        # get vector corresponding to bmu_idx
+        bmu = self.__weights[bmu_idx[0], bmu_idx[1], :]
+        # return the (bmu, bmu_idx) tuple
+        return (bmu, bmu_idx, min_dist)
+
+    def plot_history(self, title=&#39;Learning History&#39;, show_plot=False):
+        &#34;&#34;&#34;Plots learning history
+    
+        Arguments:
+            title : String
+                Title of the plot.
+            show_plot : Bool
+                Calls plt.show() if True.
+        &#34;&#34;&#34;
+        n_plots = len(self.__history)
+        figure, axis = plt.subplots(nrows=1, ncols=n_plots, figsize=(2 * 6.4, 4.8), constrained_layout=True)
+        figure.suptitle(title)
+        index = 0
+        for key in self.__history:
+            axis[index].plot(self.__history[key])
+            axis[index].set_title(key)
+#             axis[index].get_xaxis().set_visible(False)
+#             axis[index].get_yaxis().set_visible(False)
+            index += 1
+        if show_plot is True:
+            plt.show()
+        
+    def plot_weights(self, labels=None, title=&#39;SOM Model Components&#39;, show_plot=False):
+        &#34;&#34;&#34;Plots SOM weights (model components) as images.
+    
+        Arguments:
+            labels : NumPy ndarray
+                Feature labels.
+            title : String
+                Title of the plot.
+            show_plot : Bool
+                Calls plt.show() if True.
+        &#34;&#34;&#34;
+        n_plots = self.__shape[2]
+        figure, axes = plt.subplots(nrows=1, ncols=n_plots, figsize=(2 * 6.4, 4.8), constrained_layout=True)
+        figure.suptitle(title)
+        for index in range(n_plots):
+            axes[index].imshow(self.__weights[:, :, index])
+            if labels is None:
+                axes[index].set_title(index)
+            else:
+                axes[index].set_title(labels[index])          
+        if show_plot is True:
+            plt.show()</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="unsupervised.self_organizing_map.som.SelfOrganizingMap.history"><code class="name">var <span class="ident">history</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def history(self):
+    return self.__history</code></pre>
+</details>
+</dd>
+<dt id="unsupervised.self_organizing_map.som.SelfOrganizingMap.iterations"><code class="name">var <span class="ident">iterations</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def iterations(self):
+    return self.__iterations</code></pre>
+</details>
+</dd>
+<dt id="unsupervised.self_organizing_map.som.SelfOrganizingMap.learning_rate"><code class="name">var <span class="ident">learning_rate</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def learning_rate(self):
+    return self.__learning_rate</code></pre>
+</details>
+</dd>
+<dt id="unsupervised.self_organizing_map.som.SelfOrganizingMap.shape"><code class="name">var <span class="ident">shape</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def shape(self):
+    return self.__shape</code></pre>
+</details>
+</dd>
+<dt id="unsupervised.self_organizing_map.som.SelfOrganizingMap.weights"><code class="name">var <span class="ident">weights</span></code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def weights(self):
+    return self.__weights</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="unsupervised.self_organizing_map.som.SelfOrganizingMap.learn"><code class="name flex">
+<span>def <span class="ident">learn</span></span>(<span>self, data)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Trains the SOM using the provided data.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>NumPy</code> <code>ndarray</code></dt>
+<dd>The data as a 2D NumPy array consisting of rows of feature vectors.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>bmu_idx_list</code></strong> :&ensp;<code>List</code></dt>
+<dd>A list of BMU indices</dd>
+<dt><strong><code>distance_list</code></strong> :&ensp;<code>List</code></dt>
+<dd>A list of squared distances</dd>
+<dt><strong><code>radius_list</code></strong> :&ensp;<code>List</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>learn_rate_list</code></strong> :&ensp;<code>List</code></dt>
+<dd>The data as a 2D NumPy array consisting of rows of feature vectors.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">    def learn(self, data):
+        &#34;&#34;&#34;Trains the SOM using the provided data.
+        
+        Arguments:
+            data : NumPy ndarray
+                The data as a 2D NumPy array consisting of rows of feature vectors.
+            
+        Returns
+        ----------
+        bmu_idx_list : List
+            A list of BMU indices
+        distance_list : List
+            A list of squared distances
+        radius_list : List
+        
+        learn_rate_list : List
+            The data as a 2D NumPy array consisting of rows of feature vectors.
+        &#34;&#34;&#34;
+        if all(v == 0 for v in self.__shape):
+            print(f&#34;shape={self.__shape} -- nothing to be done&#34;)
+            return
+        if data is None:
+            print(f&#34;data={data} -- nothing to be done&#34;)
+            return
+        
+        bmu_idx_list = []
+        
+        # this is to save real estate
+        m = data.shape[0]   # no. of feature vectors
+        n = data.shape[1]   # no. of features
+        
+        initial_radius = max(self.__shape[0], self.__shape[1]) / 2
+        learning_rate = self.__learning_rate
+        time_constant = self.__iterations / np.log(initial_radius)
+
+        self.__history[&#39;radius&#39;].append(initial_radius)
+        self.__history[&#39;learn_rate&#39;].append(learning_rate)
+        
+        for i in range(self.__iterations):
+            if(i % 100 == 0):
+                print(&#39;iteration &#39;, i)
+            
+            # select a training example at random
+            t = data[np.random.randint(0, m)]
+#             t = data[i]
+
+            # find its Best Matching Unit
+            bmu, bmu_idx, dist = self.__find_bmu(t)
+            
+            bmu_idx_list.append(bmu_idx)
+            
+            # update the learning parameters
+            radius = initial_radius * np.exp(-i / time_constant)
+            radius_squared = radius ** 2
+            learning_rate = learning_rate * np.exp(-i / (2000 * self.__iterations))
+            
+            self.__history[&#39;radius&#39;].append(radius)
+            self.__history[&#39;learn_rate&#39;].append(learning_rate)
+            self.__history[&#39;bmu_distance&#39;].append(dist)
+            
+            # now we know the BMU, update its weight vector to move closer to input
+            # and move its neighbors closer too
+            # by a factor proportional to their 2-D distance from the BMU
+            for x in range(self.__weights.shape[0]):
+                for y in range(self.__weights.shape[1]):
+                    w = self.__weights[x, y, :]
+                    # get the squared Euclidean distance
+                    w_dist = np.sum((np.array([x, y]) - bmu_idx) ** 2)
+                    # if the distance is within the current neighbourhood radius
+                    if w_dist &lt;= radius_squared:
+                        # calculate the degree of neighborhood (based on the 2-D distance)
+#                         neighborhood = self.__calculate_influence(w_dist, radius)
+                        neighborhood = np.exp(-w_dist / (2 * radius_squared))
+                        # now update the neuron&#39;s weight using the formula:
+                        # new w = old w + (learning rate * neighborhood * delta)
+                        # where delta = input vector (t) - old w
+                        new_w = w + (learning_rate * neighborhood * (t - w))
+                        # commit the new weight
+                        self.__weights[x, y, :] = new_w
+                        
+        return bmu_idx_list</code></pre>
+</details>
+</dd>
+<dt id="unsupervised.self_organizing_map.som.SelfOrganizingMap.plot_history"><code class="name flex">
+<span>def <span class="ident">plot_history</span></span>(<span>self, title='Learning History', show_plot=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Plots learning history</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>title</code></strong> :&ensp;<code>String</code></dt>
+<dd>Title of the plot.</dd>
+<dt><strong><code>show_plot</code></strong> :&ensp;<code>Bool</code></dt>
+<dd>Calls plt.show() if True.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">    def plot_history(self, title=&#39;Learning History&#39;, show_plot=False):
+        &#34;&#34;&#34;Plots learning history
+    
+        Arguments:
+            title : String
+                Title of the plot.
+            show_plot : Bool
+                Calls plt.show() if True.
+        &#34;&#34;&#34;
+        n_plots = len(self.__history)
+        figure, axis = plt.subplots(nrows=1, ncols=n_plots, figsize=(2 * 6.4, 4.8), constrained_layout=True)
+        figure.suptitle(title)
+        index = 0
+        for key in self.__history:
+            axis[index].plot(self.__history[key])
+            axis[index].set_title(key)
+#             axis[index].get_xaxis().set_visible(False)
+#             axis[index].get_yaxis().set_visible(False)
+            index += 1
+        if show_plot is True:
+            plt.show()</code></pre>
+</details>
+</dd>
+<dt id="unsupervised.self_organizing_map.som.SelfOrganizingMap.plot_weights"><code class="name flex">
+<span>def <span class="ident">plot_weights</span></span>(<span>self, labels=None, title='SOM Model Components', show_plot=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Plots SOM weights (model components) as images.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>labels</code></strong> :&ensp;<code>NumPy</code> <code>ndarray</code></dt>
+<dd>Feature labels.</dd>
+<dt><strong><code>title</code></strong> :&ensp;<code>String</code></dt>
+<dd>Title of the plot.</dd>
+<dt><strong><code>show_plot</code></strong> :&ensp;<code>Bool</code></dt>
+<dd>Calls plt.show() if True.</dd>
+</dl></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_weights(self, labels=None, title=&#39;SOM Model Components&#39;, show_plot=False):
+    &#34;&#34;&#34;Plots SOM weights (model components) as images.
+
+    Arguments:
+        labels : NumPy ndarray
+            Feature labels.
+        title : String
+            Title of the plot.
+        show_plot : Bool
+            Calls plt.show() if True.
+    &#34;&#34;&#34;
+    n_plots = self.__shape[2]
+    figure, axes = plt.subplots(nrows=1, ncols=n_plots, figsize=(2 * 6.4, 4.8), constrained_layout=True)
+    figure.suptitle(title)
+    for index in range(n_plots):
+        axes[index].imshow(self.__weights[:, :, index])
+        if labels is None:
+            axes[index].set_title(index)
+        else:
+            axes[index].set_title(labels[index])          
+    if show_plot is True:
+        plt.show()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="unsupervised.self_organizing_map" href="index.html">unsupervised.self_organizing_map</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="unsupervised.self_organizing_map.som.SelfOrganizingMap" href="#unsupervised.self_organizing_map.som.SelfOrganizingMap">SelfOrganizingMap</a></code></h4>
+<ul class="two-column">
+<li><code><a title="unsupervised.self_organizing_map.som.SelfOrganizingMap.history" href="#unsupervised.self_organizing_map.som.SelfOrganizingMap.history">history</a></code></li>
+<li><code><a title="unsupervised.self_organizing_map.som.SelfOrganizingMap.iterations" href="#unsupervised.self_organizing_map.som.SelfOrganizingMap.iterations">iterations</a></code></li>
+<li><code><a title="unsupervised.self_organizing_map.som.SelfOrganizingMap.learn" href="#unsupervised.self_organizing_map.som.SelfOrganizingMap.learn">learn</a></code></li>
+<li><code><a title="unsupervised.self_organizing_map.som.SelfOrganizingMap.learning_rate" href="#unsupervised.self_organizing_map.som.SelfOrganizingMap.learning_rate">learning_rate</a></code></li>
+<li><code><a title="unsupervised.self_organizing_map.som.SelfOrganizingMap.plot_history" href="#unsupervised.self_organizing_map.som.SelfOrganizingMap.plot_history">plot_history</a></code></li>
+<li><code><a title="unsupervised.self_organizing_map.som.SelfOrganizingMap.plot_weights" href="#unsupervised.self_organizing_map.som.SelfOrganizingMap.plot_weights">plot_weights</a></code></li>
+<li><code><a title="unsupervised.self_organizing_map.som.SelfOrganizingMap.shape" href="#unsupervised.self_organizing_map.som.SelfOrganizingMap.shape">shape</a></code></li>
+<li><code><a title="unsupervised.self_organizing_map.som.SelfOrganizingMap.weights" href="#unsupervised.self_organizing_map.som.SelfOrganizingMap.weights">weights</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

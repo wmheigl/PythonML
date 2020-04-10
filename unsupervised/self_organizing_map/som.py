@@ -18,6 +18,14 @@ class SelfOrganizingMap(object):
     are conceptually arranged in a 2D rectangular grid. In contrast with
     layer-based neural networks the neurons in a SOM are not connected to each
     other, only to the input.
+    
+    Its primary purpose is to find structure in datasets in which the individual
+    data items consist of higher-dimensional feature vectors and display it in a
+    2-dimensional map. Basically, one wants to know whether the feature vectors
+    form clusters in their vector space. The n dimensions of the vector space get
+    reduced to two in such a way that vectors close to each other in the multi-
+    dimensional space are also close to each other in the SOM, i.e. map onto 
+    nearby neurons.
     """
 
     def __init__(self, shape=(0, 0, 0), learning_rate=0.01, iterations=200):
@@ -81,8 +89,11 @@ class SelfOrganizingMap(object):
         learn_rate_list : List
             The data as a 2D NumPy array consisting of rows of feature vectors.
         """
-        if self.__shape == (0, 0, 0) or data == None:
+        if all(v == 0 for v in self.__shape):
             print(f"shape={self.__shape} -- nothing to be done")
+            return
+        if data is None:
+            print(f"data={data} -- nothing to be done")
             return
         
         bmu_idx_list = []

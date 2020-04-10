@@ -6,7 +6,7 @@ from unsupervised.self_organizing_map import *
 from numpy.linalg.linalg import norm
 import unsupervised.utils as utils
 
-DATA_DIR = '../resources'
+DATA_DIR = '/Users/wernerheigl/ML_data_examples'
 DATA_FILE = 'Pioneer_Midkiff_Final_Event_Catalog_Final_2020-02-03.csv'
 PATH = os.path.join(DATA_DIR, DATA_FILE)
 
