@@ -24,7 +24,7 @@ class SelfOrganizingMap(object):
     2-dimensional map. Basically, one wants to know whether the feature vectors
     form clusters in their vector space. The n dimensions of the vector space get
     reduced to two in such a way that vectors close to each other in the multi-
-    dimensional space are also close to each other in the SOM, i.e. map onto 
+    dimensional space are also close to each other in the SOM, row.e. map onto 
     nearby neurons.
     """
 
@@ -47,7 +47,7 @@ class SelfOrganizingMap(object):
         self.__learning_rate = learning_rate
         self.__iterations = iterations
         # the 'state' of an instance during learning
-        self.__weights = np.random.random(shape)
+        self.__weights = np.random.random(size=shape)
         # various measures of progress during learning
         self.__history = {'radius' : [], 'learn_rate' : [], 'bmu_distance' : []}
 
@@ -99,8 +99,8 @@ class SelfOrganizingMap(object):
         bmu_idx_list = []
         
         # this is to save real estate
-        m = data.shape[0]   # no. of feature vectors
-        n = data.shape[1]   # no. of features
+        m = data.shape[0]  # no. of feature vectors
+        n = data.shape[1]  # no. of features
         
         initial_radius = max(self.__shape[0], self.__shape[1]) / 2
         learning_rate = self.__learning_rate
@@ -109,13 +109,15 @@ class SelfOrganizingMap(object):
         self.__history['radius'].append(initial_radius)
         self.__history['learn_rate'].append(learning_rate)
         
-        for i in range(self.__iterations):
-            if(i % 100 == 0):
-                print('iteration ', i)
+        print('\n', '# learning from data', '\n')
+        
+        for row in range(self.__iterations):
+            if(row % 100 == 0):
+                print('iteration ', row)
             
             # select a training example at random
             t = data[np.random.randint(0, m)]
-#             t = data[i]
+#             t = data[row]
 
             # find its Best Matching Unit
             bmu, bmu_idx, dist = self.__find_bmu(t)
@@ -123,9 +125,9 @@ class SelfOrganizingMap(object):
             bmu_idx_list.append(bmu_idx)
             
             # update the learning parameters
-            radius = initial_radius * np.exp(-i / time_constant)
+            radius = initial_radius * np.exp(-row / time_constant)
             radius_squared = radius ** 2
-            learning_rate = learning_rate * np.exp(-i / (2000 * self.__iterations))
+            learning_rate = learning_rate * np.exp(-row / (2000 * self.__iterations))
             
             self.__history['radius'].append(radius)
             self.__history['learn_rate'].append(learning_rate)
@@ -229,5 +231,41 @@ class SelfOrganizingMap(object):
                 axes[index].set_title(index)
             else:
                 axes[index].set_title(labels[index])          
+        if show_plot is True:
+            plt.show()
+
+    def plot_u_matrix(self, title='U Matrix', show_plot=False):
+        """Plots the U matrix of the SOM.
+    
+        Arguments:
+            title : String
+                Title of the plot.
+            show_plot : Bool
+                Calls plt.show() if True.
+        """
+        n_rows = self.__shape[0]
+        n_cols = self.__shape[1]
+        u_matrix = np.zeros(shape=(n_rows, n_cols))
+        for i in range(n_rows):
+            for j in range(n_cols):
+                v = self.__weights[i][j]  # a vector 
+                sum_dists = 0.0
+                ct = 0
+                if i - 1 >= 0:  # above
+                    sum_dists += np.linalg.norm(v - self.__weights[i - 1][j]);
+                    ct += 1
+                if i + 1 <= n_rows - 1:  # below
+                    sum_dists += np.linalg.norm(v - self.__weights[i + 1][j]);
+                    ct += 1
+                if j - 1 >= 0:  # left
+                    sum_dists += np.linalg.norm(v - self.__weights[i][j - 1]);
+                    ct += 1
+                if j + 1 <= n_cols - 1:  # right
+                    sum_dists += np.linalg.norm(v - self.__weights[i][j + 1]);
+                    ct += 1
+                u_matrix[i][j] = sum_dists / ct
+        fig = plt.figure()
+        fig.suptitle(title)
+        plt.imshow(u_matrix, cmap='gray')  # black = close = clusters
         if show_plot is True:
             plt.show()

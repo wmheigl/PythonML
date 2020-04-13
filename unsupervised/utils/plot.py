@@ -107,12 +107,12 @@ def plot_data_matrix(data=None, labels=None, title='Data Histograms', show_plot=
             axes[row, col].set_yticklabels([])
             axes[row, col].set_xticklabels([])
     if labels is None:
-        for i in range(n_plots):
-            axes[0, i].set_title(i)
-            axes[i, 0].set_ylabel(i, visible=True)
+        for row in range(n_plots):
+            axes[0, row].set_title(row)
+            axes[row, 0].set_ylabel(row, visible=True)
     else:
-        for i in range(n_plots):
-            axes[0, i].set_title(labels[i])
-            axes[i, 0].set_ylabel(labels[i], visible=True)
+        for row in range(n_plots):
+            axes[0, row].set_title(labels[row])
+            axes[row, 0].set_ylabel(labels[row], visible=True)
     if show_plot is True:
         plt.show()
