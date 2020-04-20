@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#===============================================================================
+#=============================================================================
 # Creates a self-organizing map for the iris data set.
-#===============================================================================
+#=============================================================================
 
 import os, sys
 
@@ -28,7 +28,7 @@ print('data shape: (rows, cols) =', data_x.shape, '\n')
 ROWS = 30; COLS = 30
 DIM = 4  # dimensionality of feature vectors
 LEARN_RATE = 0.5  # initial learning rate
-ITERATIONS = 5000
+ITERATIONS = 500
 som = SelfOrganizingMap(shape=(ROWS, COLS, DIM),
                         learning_rate=LEARN_RATE,
                         iterations=ITERATIONS)
