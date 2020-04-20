@@ -1,13 +1,21 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+#===============================================================================
+# Creates a self-organizing map for events from Pioneer's Midkiff project.
+#===============================================================================
+
+import os, sys
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
-import os, sys
+
 from unsupervised.self_organizing_map import *
-from numpy.linalg.linalg import norm
 import unsupervised.utils as utils
 
 DATA_DIR = '/Users/wernerheigl/ML_data_examples'
-DATA_FILE = 'Pioneer_Midkiff_Final_Event_Catalog_Final_2020-02-03.csv'
+DATA_FILE = 'PXD_Midkiff_no_outliers.csv'
 PATH = os.path.join(DATA_DIR, DATA_FILE)
 
 visualize_data = False
@@ -16,7 +24,7 @@ visualize_som = True
 print('# loading data', '\n')
 with open(PATH, 'r') as data_file:
 #     cols_to_load = np.linspace(8, 15, 8, dtype='int')
-    cols_to_load = (10, 11, 13, 14, 15)
+    cols_to_load = (10, 11, 13, 14)
     labels = np.loadtxt(data_file, delimiter=',', dtype='str', usecols=cols_to_load, max_rows=1)
     raw_data = np.loadtxt(data_file, skiprows=2, delimiter=',', usecols=cols_to_load)
 print('data labels =', labels, '\n')
@@ -32,8 +40,9 @@ for ar in raw_data.T:
     print(stats.describe(ar))
 
 if visualize_data is True:
-    utils.plot_data(data=raw_data, labels=labels, show_plot=False)
-    utils.plot_data_hist(data=raw_data, labels=labels, show_plot=False)
+    figure_size = (6.4, 2.4)
+    utils.plot_data(data=raw_data, figsize=figure_size, labels=labels, show_plot=False)
+    utils.plot_data_hist(data=raw_data, figsize=figure_size, labels=labels, show_plot=False)
 
 # normalize the data in each column
 raw_data_min = raw_data.min(axis=0)
@@ -47,13 +56,15 @@ for ar in data.T:
 # print('\n')
 
 if visualize_data is True:
-    utils.plot_data_matrix(data=data, labels=labels, show_plot=False)
+    figure_size = (6.4, 6.4)
+    utils.plot_data_matrix(data=data, figsize=figure_size, labels=labels, show_plot=False)
+# sys.exit()
 
 # SOM
-ROWS = 15; COLS = 15
+ROWS = 100; COLS = 150
 DIM = data.shape[1]  # dimensionality of feature vectors
 LEARN_RATE = 0.1  # initial learning rate
-ITERATIONS = 18000
+ITERATIONS = 20000
 som = SelfOrganizingMap(shape=(ROWS, COLS, DIM),
                         learning_rate=LEARN_RATE,
                         iterations=ITERATIONS)
@@ -64,8 +75,8 @@ print(f"found {len(bmus)} BMUs")
 
 # display results & diagnostics
 if visualize_som is True:
-    som.plot_history(title='Learning Diagnostics')
-    som.plot_weights(labels, title='Self-organizing map for PXD-Midkiff events')
+    som.plot_history(figsize=(6.4, 2.4), title='Learning Diagnostics')
+    som.plot_components(figsize=(6.4, 2.4), labels=labels, title='Self-organizing map for PXD-Midkiff events')
     som.plot_u_matrix()
     plt.show()
 

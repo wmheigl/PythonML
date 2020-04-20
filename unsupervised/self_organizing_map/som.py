@@ -3,12 +3,15 @@ Created on Apr 2, 2020
 
 @author: W. M. Heigl
 '''
-import numpy as np
-import matplotlib.pyplot as plt
+
+__all__ = ['SelfOrganizingMap']
+__author__ = 'Werner M. Heigl'
+
 import sys
 
-# exported names at module level
-__all__ = ['SelfOrganizingMap']
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
 
 
 class SelfOrganizingMap(object):
@@ -24,7 +27,7 @@ class SelfOrganizingMap(object):
     2-dimensional map. Basically, one wants to know whether the feature vectors
     form clusters in their vector space. The n dimensions of the vector space get
     reduced to two in such a way that vectors close to each other in the multi-
-    dimensional space are also close to each other in the SOM, row.e. map onto 
+    dimensional space are also close to each other in the SOM, i.e. map onto 
     nearby neurons.
     """
 
@@ -37,7 +40,7 @@ class SelfOrganizingMap(object):
         Arguments:
         ----------
             shape : Tuple
-                The size of the network is (rows, cols, weights)
+                The shape of the network is (rows, cols, weights)
             learning_rate : Float
                 The learning rate of the network.
             iterations : Integer
@@ -71,7 +74,19 @@ class SelfOrganizingMap(object):
     def weights(self):
         return self.__weights
 
-    def learn(self, data):
+    def init_weights(self, data=None):
+        """Sets the neurons' weights as a perturbation from the median of the
+        sampling distributions.
+        """
+        if data is None:
+            return
+        
+        medians = np.median(data, axis=0)
+        a = medians - medians * 0.2
+        b = medians + medians * 0.2
+        self.__weights = (b - a) * np.random.random(size=self.__shape) + a
+
+    def learn(self, data=None, cooling='linear'):
         """Trains the SOM using the provided data.
         
         Arguments:
@@ -111,11 +126,24 @@ class SelfOrganizingMap(object):
         
         print('\n', '# learning from data', '\n')
         
-        for row in range(self.__iterations):
-            if(row % 100 == 0):
-                print('iteration ', row)
+        for i in range(self.__iterations):
+            if(i % 100 == 0):
+                print('iteration ', i)
             
-            # select a training example at random
+            # update the learning parameters
+            if cooling is 'linear':
+                radius = initial_radius * (1 - i / self.__iterations)
+                learning_rate = learning_rate * (1 - i / self.__iterations)
+            else:
+                radius = initial_radius * np.exp(-i / time_constant)
+                learning_rate = learning_rate * np.exp(-i / (2000 * self.__iterations))
+                
+            radius_squared = radius ** 2
+            
+            self.__history['radius'].append(radius)
+            self.__history['learn_rate'].append(learning_rate)
+
+            # select a training vector at random
             t = data[np.random.randint(0, m)]
 #             t = data[row]
 
@@ -124,13 +152,6 @@ class SelfOrganizingMap(object):
             
             bmu_idx_list.append(bmu_idx)
             
-            # update the learning parameters
-            radius = initial_radius * np.exp(-row / time_constant)
-            radius_squared = radius ** 2
-            learning_rate = learning_rate * np.exp(-row / (2000 * self.__iterations))
-            
-            self.__history['radius'].append(radius)
-            self.__history['learn_rate'].append(learning_rate)
             self.__history['bmu_distance'].append(dist)
             
             # now we know the BMU, update its weight vector to move closer to input
@@ -138,11 +159,11 @@ class SelfOrganizingMap(object):
             # by a factor proportional to their 2-D distance from the BMU
             for x in range(self.__weights.shape[0]):
                 for y in range(self.__weights.shape[1]):
-                    w = self.__weights[x, y, :]
                     # get the squared Euclidean distance
                     w_dist = np.sum((np.array([x, y]) - bmu_idx) ** 2)
                     # if the distance is within the current neighbourhood radius
-                    if w_dist <= radius_squared:
+                    if w_dist < radius_squared:
+                        w = self.__weights[x, y, :]
                         # calculate the degree of neighborhood (based on the 2-D distance)
 #                         neighborhood = self.__calculate_influence(w_dist, radius)
                         neighborhood = np.exp(-w_dist / (2 * radius_squared))
@@ -171,6 +192,7 @@ class SelfOrganizingMap(object):
             the weights of the BMU
         """
         bmu_idx = np.array([0, 0])
+        result = (0, 0)
         # set the initial minimum distance to a huge number
         min_dist = np.iinfo(np.int).max
         # calculate the high-dimensional distance between each neuron and the input
@@ -184,22 +206,25 @@ class SelfOrganizingMap(object):
                     min_dist = square_dist
 #                     bmu_idx = np.array([x, y])
                     np.put(bmu_idx, [0, 1], [x, y])
+                    result = (x, y)
         # get vector corresponding to bmu_idx
         bmu = self.__weights[bmu_idx[0], bmu_idx[1], :]
         # return the (bmu, bmu_idx) tuple
-        return (bmu, bmu_idx, min_dist)
+        return (bmu, result, min_dist)
 
-    def plot_history(self, title='Learning History', show_plot=False):
+    def plot_history(self, figsize=None, title='Learning History', show_plot=False):
         """Plots learning history
     
         Arguments:
+            figsize : Tuple
+                If 'None' default figure size (6.4, 4.8) is used.
             title : String
                 Title of the plot.
             show_plot : Bool
                 Calls plt.show() if True.
         """
         n_plots = len(self.__history)
-        figure, axis = plt.subplots(nrows=1, ncols=n_plots, figsize=(2 * 6.4, 4.8), constrained_layout=True)
+        figure, axis = plt.subplots(nrows=1, ncols=n_plots, figsize=figsize, constrained_layout=True)
         figure.suptitle(title)
         index = 0
         for key in self.__history:
@@ -211,10 +236,12 @@ class SelfOrganizingMap(object):
         if show_plot is True:
             plt.show()
         
-    def plot_weights(self, labels=None, title='SOM Model Components', show_plot=False):
-        """Plots SOM weights (model components) as images.
+    def plot_components(self, figsize=None, labels=None, title='SOM Model Components', show_plot=False):
+        """Plots model components (elements of SOM weight vector) as images.
     
         Arguments:
+            figsize : Tuple
+                If 'None' default figure size (6.4, 4.8) is used.
             labels : NumPy ndarray
                 Feature labels.
             title : String
@@ -223,7 +250,7 @@ class SelfOrganizingMap(object):
                 Calls plt.show() if True.
         """
         n_plots = self.__shape[2]
-        figure, axes = plt.subplots(nrows=1, ncols=n_plots, figsize=(2 * 6.4, 4.8), constrained_layout=True)
+        figure, axes = plt.subplots(nrows=1, ncols=n_plots, figsize=figsize, constrained_layout=True)
         figure.suptitle(title)
         for index in range(n_plots):
             axes[index].imshow(self.__weights[:, :, index])
@@ -246,6 +273,7 @@ class SelfOrganizingMap(object):
         n_rows = self.__shape[0]
         n_cols = self.__shape[1]
         u_matrix = np.zeros(shape=(n_rows, n_cols))
+#         np.square(self.__weights)
         for i in range(n_rows):
             for j in range(n_cols):
                 v = self.__weights[i][j]  # a vector 
@@ -263,7 +291,20 @@ class SelfOrganizingMap(object):
                 if j + 1 <= n_cols - 1:  # right
                     sum_dists += np.linalg.norm(v - self.__weights[i][j + 1]);
                     ct += 1
+#                 if i - 1 >= 0 and j - 1 >= 0:  # above & left
+#                     sum_dists += np.linalg.norm(v - self.__weights[i - 1][j - 1]);
+#                     ct += 1
+#                 if i - 1 >= 0 and j + 1 <= n_cols - 1:  # above & right
+#                     sum_dists += np.linalg.norm(v - self.__weights[i - 1][j + 1]);
+#                     ct += 1
+#                 if i + 1 <= n_rows - 1 and j - 1 >= 0:  # below & left
+#                     sum_dists += np.linalg.norm(v - self.__weights[i + 1][j - 1]);
+#                     ct += 1
+#                 if i + 1 <= n_rows - 1 and j + 1 <= n_cols - 1:  # below & right
+#                     sum_dists += np.linalg.norm(v - self.__weights[i + 1][j + 1]);
+#                     ct += 1
                 u_matrix[i][j] = sum_dists / ct
+#                 np.square(u_matrix)
         fig = plt.figure()
         fig.suptitle(title)
         plt.imshow(u_matrix, cmap='gray')  # black = close = clusters

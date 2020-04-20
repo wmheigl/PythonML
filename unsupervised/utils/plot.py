@@ -9,12 +9,14 @@ import matplotlib.pyplot as plt
 __all__ = ['plot_data', 'plot_data_hist', 'plot_data_matrix']
 
 
-def plot_data(data=None, labels=None, title='Data', show_plot=False):
+def plot_data(data=None, figsize=None, labels=None, title='Data', show_plot=False):
     """Plots data.
     
     Arguments:
         data : NumPy ndarray.
             Each row is a feature vector.
+        figsize : Tuple
+            If 'None' default figure size (6.4, 4.8) is used.
         labels : NumPy ndarray
             Feature labels.
         title : String
@@ -28,7 +30,7 @@ def plot_data(data=None, labels=None, title='Data', show_plot=False):
     # need some logic to determine number of rows and columns
     n_rows = 1
     n_plots = data.shape[1]
-    fig_size = (2 * 6.4, 4.8)
+    fig_size = figsize
     figure, axes = plt.subplots(nrows=n_rows, ncols=n_plots, figsize=fig_size, constrained_layout=True)
     figure.suptitle(title)
     for index in range(n_plots):
@@ -41,7 +43,7 @@ def plot_data(data=None, labels=None, title='Data', show_plot=False):
         plt.show()
 
 
-def plot_data_hist(data=None, bins=50, labels=None, title='Data Histograms', show_plot=False):
+def plot_data_hist(data=None, bins=50, figsize=None, labels=None, title='Data Histograms', show_plot=False):
     """Plots data histograms.
     
     Arguments:
@@ -49,6 +51,8 @@ def plot_data_hist(data=None, bins=50, labels=None, title='Data Histograms', sho
             Each row is a feature vector.
         bins : Integer
             Number of bins in histograms.
+        figsize : Tuple
+            If 'None' default figure size (6.4, 4.8) is used.
         labels : NumPy ndarray
             Feature labels.
         title : String
@@ -62,8 +66,7 @@ def plot_data_hist(data=None, bins=50, labels=None, title='Data Histograms', sho
     # need some logic to determine number of rows and columns
     n_rows = 1
     n_plots = data.shape[1]
-    fig_size = (2 * 6.4, 4.8)
-    figure, axes = plt.subplots(nrows=n_rows, ncols=n_plots, figsize=fig_size, constrained_layout=True)
+    figure, axes = plt.subplots(nrows=n_rows, ncols=n_plots, figsize=figsize, constrained_layout=True)
     figure.suptitle(title)
     for index in range(n_plots):
         axes[index].hist(data[:, index], bins=bins)
@@ -75,7 +78,7 @@ def plot_data_hist(data=None, bins=50, labels=None, title='Data Histograms', sho
         plt.show()
 
 
-def plot_data_matrix(data=None, labels=None, title='Data Histograms', show_plot=False):
+def plot_data_matrix(data=None, figsize=None, labels=None, title='Data Histograms', show_plot=False):
     """Plots data histograms.
     
     Arguments:
@@ -83,6 +86,8 @@ def plot_data_matrix(data=None, labels=None, title='Data Histograms', show_plot=
             Each row is a feature vector.
         bins : Integer
             Number of bins in histograms.
+        figsize : Tuple
+            If 'None' default figure size (6.4, 4.8) is used.
         labels : NumPy ndarray
             Feature labels.
         title : String
@@ -96,8 +101,7 @@ def plot_data_matrix(data=None, labels=None, title='Data Histograms', show_plot=
     # need some logic to determine number of rows and columns
     n_rows = data.shape[1]
     n_plots = data.shape[1]
-    fig_size = (2 * 6.4, 2 * 4.8)
-    figure, axes = plt.subplots(nrows=n_rows, ncols=n_plots, figsize=fig_size, constrained_layout=True)
+    figure, axes = plt.subplots(nrows=n_rows, ncols=n_plots, figsize=figsize, constrained_layout=True)
     figure.suptitle(title)
     for row in range(n_plots):
         for col in range(n_plots):
