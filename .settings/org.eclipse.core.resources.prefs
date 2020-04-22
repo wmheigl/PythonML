@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//supervised/examples/mlp_moon.py=utf-8
 encoding//unsupervised/examples/data_loading_with_pandas.py=utf-8
 encoding//unsupervised/examples/som_cog_hauser.py=utf-8
 encoding//unsupervised/examples/som_iris.py=utf-8

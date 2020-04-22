@@ -12,19 +12,21 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 DATA_DIR = '/Users/wernerheigl/ML_data_examples'
-DATA_FILE = 'COG_Hauser_no_outliers.csv'
-# DATA_FILE = 'Hauser-MachineLearningSet__Class1and4_clean.csv'
+# DATA_FILE = 'COG_Hauser_no_outliers.csv'
+DATA_FILE = 'Hauser-MachineLearningSet__Class1and4.csv'
 PATH = os.path.join(DATA_DIR, DATA_FILE)
 
 VISUALIZE_DATA = True
 
 print('# loading data', '\n')
 with open(PATH, 'r') as data_file:
-    df = pd.read_csv(data_file, usecols=(8, 10, 13, 14))
+    cols_to_load = ['Amplitude', 'Quality', 'Cloudiness', 'ImageSnRatio']
+    df = pd.read_csv(data_file, usecols=cols_to_load)
 print(df.describe())
 
 # transform some of the data (makes data more Gaussian-looking)
-df = df[['Amplitude', 'Quality', 'Cloudiness', 'ImageSnRatio']].apply(np.log)
+df = df[cols_to_load].apply(np.log)
+df = df[np.isfinite(df) | np.isnan(df)]
 print(df.describe())
 
 if VISUALIZE_DATA is True:
