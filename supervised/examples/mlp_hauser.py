@@ -1,6 +1,9 @@
 '''
 Created on Apr 20, 2020
 
+Python script that show the use of a multi-layer perceptron to predict
+event class from event attributes.
+
 @author: wernerheigl
 '''
 import os, sys
@@ -11,6 +14,7 @@ import pandas as pd
 import tensorflow as tf
 import tensorflow.keras as keras
 
+# this only matters on macOS
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 
@@ -22,14 +26,14 @@ def main():
     PATH = os.path.join(DATA_DIR, DATA_FILE)
     
     VISUALIZE_DATA = False
-    VISUALIZE_RESULTS = True
-    SHOW_TRAINED_VARIABLES = False
+    VISUALIZE_RESULTS = False
+    SHOW_TRAINED_VARIABLES = True
 
     # neural network configuration
     INPUT_NODES = 4
     HIDDEN_NODES = 10
     OUTPUT_NODES = 2
-    EPOCHS = 5
+    EPOCHS = 1
     BATCH_SIZE = 50
     VALIDATION_SPLIT = 0.3
     LEARNING_RATE = 0.001
@@ -63,7 +67,7 @@ def main():
     y_train = keras.utils.to_categorical(y_train, OUTPUT_NODES)
     
     # Reserve at most 10,000 samples for predictions
-    # Note: randint() is drawing w/ replacement
+    # Note: randint() does drawing w/ replacement
     idx = np.random.randint(0, len(x_train), size=10000)
     x_test = x_train[idx]
     y_test = y_train[idx]
@@ -72,11 +76,11 @@ def main():
     
     print('# configuring model', '\n')
     inputs = keras.Input(shape=(INPUT_NODES,), batch_size=BATCH_SIZE)
-    hidden1 = keras.layers.Dense(HIDDEN_NODES,
-                                 activation='relu',
+    hidden = keras.layers.Dense(HIDDEN_NODES,
+                                 activation='relu',  # could use 'linear' too
                                  kernel_initializer='glorot_normal')(inputs)
     outputs = keras.layers.Dense(OUTPUT_NODES,
-                                 activation='softmax')(hidden1)
+                                 activation='softmax')(hidden)
     model = keras.Model(inputs=inputs, outputs=outputs, name='hauser_mlp')
     print(model.summary(), '\n')
 
@@ -101,14 +105,14 @@ def main():
                         verbose=1)
 
     if SHOW_TRAINED_VARIABLES is True:
-        print('\n', '# trained variables (weights & bias for each neuron)', '\n')
+        print('\n', '# trained variables (weights & bias for each layer & its neurons)', '\n')
         # trainable_variables is an array of type tf.Variable
         for v in model.trainable_variables:
             print(v, '\n')
 
     print('\n', '# evaluating model on test data', '\n')
     test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
-
+    
     # confusion matrix for test data
     print('\n', '# confusion matrix for test data', '\n')
     labels = np.argmax(y_test, axis=1)
