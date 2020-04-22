@@ -13,13 +13,16 @@ from tensorflow.keras import layers
 
 
 def main():
+    
+    print('\n', '# building model', '\n')
     inputs = keras.Input(shape=(784,), name='digits')
     x = layers.Dense(64, activation='relu', name='dense_1')(inputs)
     x = layers.Dense(64, activation='relu', name='dense_2')(x)
-    outputs = layers.Dense(10, name='predictions')(x)
+    outputs = layers.Dense(10, activation='linear', name='predictions')(x)
     
     model = keras.Model(inputs=inputs, outputs=outputs)
     
+    print('\n', '# loading data', '\n')
     (x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
 
     # Preprocess the data (these are Numpy arrays)
@@ -44,22 +47,23 @@ def main():
     print('# Fit model on training data')
     history = model.fit(x_train, y_train,
                         batch_size=64,
-                        epochs=3,
+                        epochs=1,
                         # We pass some validation for
                         # monitoring validation loss and metrics
                         # at the end of each epoch
                         validation_data=(x_val, y_val))
     
-    print('\nhistory dict:', history.history)
+#     print('\nhistory dict:', history.history)
     
     # Evaluate the model on the test data using `evaluate`
-    print('\n# Evaluate on test data')
-    results = model.evaluate(x_test, y_test, batch_size=128)
+    print('\n', '# Evaluate on test data')
+    results = model.evaluate(x_test, y_test, batch_size=128, verbose=0)  # verbose=1 clears Eclipse console
     print('test loss, test acc:', results)
     
     # confusion matrix for test data
     print('\n', '# confusion matrix for test data', '\n')
     predictions = np.argmax(model.predict(x_test), axis=1)
+    print(predictions[:10])
     m = tf.math.confusion_matrix(y_test, predictions)
     tf.print(m, summarize=-1)
 
