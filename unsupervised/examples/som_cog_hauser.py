@@ -11,7 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 
-from unsupervised.self_organizing_map import *
+from unsupervised.self_organizing_map import SelfOrganizingMap
 import unsupervised.utils as utils
 
 DATA_DIR = '/Users/wernerheigl/ML_data_examples'
