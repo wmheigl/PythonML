@@ -7,7 +7,9 @@ Class for self-organizing maps from p. 387 of the book
 @author: wernerheigl
 '''
 
-import matplotlib.pyplot as plt
+__all__ = ['WTU']
+__author__ = 'Werner M. Heigl'
+
 import numpy as np
 import tensorflow as tf
 
@@ -16,7 +18,13 @@ import tensorflow as tf
 class WTU(object):
        
     def __init__(self, m, n, dim, num_iterations, eta=0.5, sigma=None):
-        
+        """
+        m x n : The dimension of the 2D lattice of neurons
+        dim : Dimension if the input data
+        num_iterations : Total number of training iterations
+        eta : Learning rate
+        sigma : Radius of neighborhood function
+        """
         self._m = m
         self._n = n
         self._neighbourhood = []
@@ -43,7 +51,7 @@ class WTU(object):
             m = self._m
             n = self._n 
             
-            # Finding the Winner and its location
+            # Finding the winner and its location
             d = tf.sqrt(tf.reduce_sum(tf.pow(self._W - tf.stack([x for i in range(m * n)]), 2), 1))
             self.WTU_idx = tf.argmin(d, 0)
             
@@ -55,13 +63,13 @@ class WTU(object):
             _eta_new = self.eta * learning_rate
             _sigma_new = self.sigma * learning_rate
             
-            # Calculating Neighbourhood function
+            # Calculating neighborhood function
             distance_square = tf.reduce_sum(tf.pow(tf.subtract(
                 self._topography, tf.stack([self.WTU_loc for i in range(m * n)])), 2), 1)
             neighbourhood_func = tf.exp(tf.negative(tf.math.divide(tf.cast(
                 distance_square, "float32"), tf.pow(_sigma_new, 2))))
             
-            # multiply learning rate with neighbourhood func
+            # multiply learning rate with neighborhood function
             eta_into_Gamma = tf.multiply(_eta_new, neighbourhood_func)
             
             # Shape it so that it can be multiplied to calculate dW
@@ -85,7 +93,6 @@ class WTU(object):
         for i, loc in enumerate(self._locations):
             centroid_grid[loc[0]].append(self._Wts[i])
         self._centroid_grid = centroid_grid
-
         self._learned = True
     
     def winner(self, x):
@@ -93,19 +100,27 @@ class WTU(object):
         return idx
              
     def _neuron_location(self, m, n):
-        
+        """
+        Generates a 2D lattice of neurons
+        """
         for i in range(m):
             for j in range(n):
                 yield np.array([i, j])
                 
     def get_centroids(self):
-       
+        """
+        Returns a list of 'm' lists, with each inner list
+        containing the 'n' corresponding centroid locations
+        as 1D NumPy arrays.
+        """
         if not self._learned:
             raise ValueError("SOM not trained yet")
         return self._centroid_grid
 
     def map_vects(self, X):
-
+        """
+        Maps each input vector to the relevant neuron in the lattice.
+        """
         if not self._learned:
             raise ValueError("SOM not trained yet")
 
