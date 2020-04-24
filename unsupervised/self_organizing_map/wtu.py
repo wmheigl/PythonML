@@ -83,6 +83,8 @@ class WTU(object):
            
     def fit(self, X):
         for i in range(self._num_iterations):
+            if(i % 10 == 0):
+                print('iteration ', i)
             for x in X:
                 self.training(x, i)
         
