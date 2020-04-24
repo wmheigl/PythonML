@@ -75,8 +75,10 @@ class SelfOrganizingMap(object):
         return self.__weights
 
     def init_weights(self, data=None):
-        """Sets the neurons' weights as a perturbation from the median of the
+        """
+        Sets the neurons' weights as a perturbation from the median of the
         sampling distributions.
+        Could also use random samples from the data.
         """
         if data is None:
             return
