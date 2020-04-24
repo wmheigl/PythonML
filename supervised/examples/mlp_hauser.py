@@ -53,6 +53,7 @@ def main():
     labels = df[cols_to_load.pop()]  # drop everything except last column
     print('\nafter transformation and cleaning:')
     print(data.describe())
+    sys.exit()
     
     if VISUALIZE_DATA is True:
         data.plot(subplots=True, title='Input Data')
