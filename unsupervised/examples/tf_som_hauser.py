@@ -48,13 +48,16 @@ def main():
     name = df['Color-Name'].values
     n_dim = len(df.columns) - 1
     print(df.describe())
+    print('\n')
 
-    # training data
+    print('# training the network', '\n')
     colors = data
     color_names = name
-    
-    som = WTU(30, 30, n_dim, 500, eta=0.1, sigma=10.0)
+    som = WTU(30, 30, n_dim, 100, eta=0.1, sigma=10.0)
     som.fit(colors)
+
+    idx, loc = som.winner([0.5, 0.5, 0.5])
+    print(idx, loc)
 
     # Get output grid
     image_grid = som.get_centroids()
@@ -68,9 +71,7 @@ def main():
     for i, m in enumerate(mapped):
         plt.text(m[1], m[0], color_names[i], ha='center', va='center',
                  bbox=dict(facecolor='white', alpha=0.5, lw=0))
-
-    idx, loc = som.winner([0.5, 0.5, 0.5])
-    print(idx, loc)
+    plt.show()
     
     
 if __name__ == '__main__':
