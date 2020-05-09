@@ -41,7 +41,7 @@ def main():
     
     training_dataset = tf.data.Dataset.from_tensor_slices(x_train).batch(batch_size)
     
-    model = enc.SparseAutoencoder(hidden_dim=hidden_dim, original_dim=original_dim)
+    model = enc.SparseAutoEncoder(hidden_dim=hidden_dim, original_dim=original_dim)
     opt = tf.keras.optimizers.Adam(learning_rate=1e-2)
     enc.train_loop(model, opt, enc.loss, training_dataset, epochs=max_epochs)
     

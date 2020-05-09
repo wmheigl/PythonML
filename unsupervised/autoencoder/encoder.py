@@ -87,13 +87,13 @@ class SparseDecoder(k.layers.Layer):
         return activation 
 
 
-class SparseAutoencoder(k.Model):
+class SparseAutoEncoder(k.Model):
     '''
     classdocs
     '''
 
     def __init__(self, hidden_dim, original_dim):
-        super(SparseAutoencoder, self).__init__()
+        super(SparseAutoEncoder, self).__init__()
         self.loss = []
         self.encoder = SparseEncoder(hidden_dim=hidden_dim)
         self.decoder = SparseDecoder(hidden_dim=hidden_dim, original_dim=original_dim)
