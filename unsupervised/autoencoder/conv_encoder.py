@@ -60,13 +60,13 @@ class Decoder(k.layers.Layer):
         return self.conv4(x)
 
     
-class Autoencoder(k.Model):
+class AutoEncoder(k.Model):
     '''
     classdocs
     '''
 
     def __init__(self, filters):
-        super(Autoencoder, self).__init__()
+        super(AutoEncoder, self).__init__()
         self.loss = []
         self.encoder = Encoder(filters)
         self.decoder = Decoder(filters)
