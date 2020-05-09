@@ -7,7 +7,7 @@ Created on May 9, 2020
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-import tensorflow.keras as K
+import tensorflow.keras as k
 from unsupervised.autoencoder import conv_encoder as enc
 
 
@@ -19,7 +19,7 @@ def main():
     max_epochs = 10
     filters = [32, 32, 16]
 
-    (x_train, _), (x_test, _) = K.datasets.mnist.load_data()
+    (x_train, _), (x_test, _) = k.datasets.mnist.load_data()
 
     x_train = x_train / 255.
     x_test = x_test / 255.
@@ -40,11 +40,8 @@ def main():
     # print(x_test_noisy[1].dtype)
 
     model = enc.AutoEncoder(filters)
-    
     model.compile(loss='binary_crossentropy', optimizer='adam')
-    
-    loss = model.fit(x_train_noisy,
-                    x_train,
+    loss = model.fit(x_train_noisy, x_train,
                     validation_data=(x_test_noisy, x_test),
                     epochs=max_epochs,
                     batch_size=batch_size)
