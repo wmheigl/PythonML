@@ -24,8 +24,8 @@ def main():
     max_epochs = 20
     learning_rate = 1e-3
     momentum = 8e-1
-#     hidden_dim = 784 + 392
-    hidden_dim = 128
+    hidden_dim = 784 + 784
+#     hidden_dim = 128
     original_dim = 784
     
     (x_train, _), (x_test, _) = k.datasets.mnist.load_data()
@@ -46,7 +46,7 @@ def main():
     noise = np.random.normal(loc=0.5, scale=0.5, size=x_test.shape)
     x_test_noisy = x_test + noise
 
-    model = enc.Autoencoder(hidden_dim=hidden_dim, original_dim=original_dim)
+    model = enc.AutoEncoder(hidden_dim=hidden_dim, original_dim=original_dim)
     model.compile(loss='mse', optimizer='adam')
     loss = model.fit(x_train_noisy,
                     x_train,

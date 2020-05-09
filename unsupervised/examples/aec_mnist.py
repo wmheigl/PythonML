@@ -9,7 +9,7 @@ import os, sys
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-import tensorflow.keras as K
+import tensorflow.keras as k
 from unsupervised.autoencoder import encoder as enc
 
 
@@ -28,7 +28,7 @@ def main():
     hidden_dim = 128
     original_dim = 784
     
-    (x_train, _), (x_test, _) = K.datasets.mnist.load_data()
+    (x_train, _), (x_test, _) = k.datasets.mnist.load_data()
 
     x_train = x_train / 255.
     x_test = x_test / 255.
@@ -41,7 +41,7 @@ def main():
     
     training_dataset = tf.data.Dataset.from_tensor_slices(x_train).batch(batch_size)
     
-    model = enc.Autoencoder(hidden_dim=hidden_dim, original_dim=original_dim)
+    model = enc.AutoEncoder(hidden_dim=hidden_dim, original_dim=original_dim)
 #     opt = tf.optimizers.SGD(learning_rate=learning_rate, momentum=momentum)
     opt = tf.keras.optimizers.Adam(learning_rate=1e-2)
     enc.train_loop(model, opt, enc.loss, training_dataset, epochs=max_epochs)
