@@ -7,7 +7,9 @@ Created on May 8, 2020
 import tensorflow as tf
 import tensorflow.keras as k
 
-__all__ = ['Encoder', 'Decoder', 'Autoencoder', 'loss', 'train', 'train_loop']
+__all__ = ['Encoder', 'Decoder', 'AutoEncoder',
+           'SparseEncoder', 'SparseDecoder', 'SparseAutoEncoder',
+           'loss', 'train', 'train_loop']
 __author__ = 'Werner M. Heigl'
 
 
@@ -39,13 +41,13 @@ class Decoder(k.layers.Layer):
         return activation
 
 
-class Autoencoder(k.Model):
+class AutoEncoder(k.Model):
     '''
     classdocs
     '''
 
     def __init__(self, hidden_dim, original_dim):
-        super(Autoencoder, self).__init__()
+        super(AutoEncoder, self).__init__()
         self.loss = []
         self.encoder = Encoder(hidden_dim=hidden_dim)
         self.decoder = Decoder(hidden_dim=hidden_dim, original_dim=original_dim)
