@@ -4,11 +4,11 @@ Created on May 8, 2020
 @author: wernerheigl
 '''
 
-__all__ = ['Encoder', 'Decoder', 'Autoencoder', 'loss', 'train', 'train_loop']
-__author__ = 'Werner M. Heigl'
-
 import tensorflow as tf
 import tensorflow.keras as k
+
+__all__ = ['Encoder', 'Decoder', 'Autoencoder', 'loss', 'train', 'train_loop']
+__author__ = 'Werner M. Heigl'
 
 
 class Encoder(k.layers.Layer):
@@ -17,9 +17,6 @@ class Encoder(k.layers.Layer):
     '''
 
     def __init__(self, hidden_dim):
-        '''
-        Constructor
-        '''
         super(Encoder, self).__init__()
         self.hidden_layer = k.layers.Dense(units=hidden_dim, activation='relu')
     
@@ -58,7 +55,53 @@ class Autoencoder(k.Model):
         reconstructed = self.decoder(encoded)
         return reconstructed
 
+
+class SparseEncoder(k.layers.Layer):
+    '''
+    classdocs
+    '''
+
+    def __init__(self, hidden_dim):
+        super(SparseEncoder, self).__init__()
+        self.hidden_layer = k.layers.Dense(units=hidden_dim,
+                    activation=tf.nn.relu, activity_regularizer=k.regularizers.l1(10e-5))
     
+    def call(self, input_features):
+        activation = self.hidden_layer(input_features)
+        return activation
+
+
+class SparseDecoder(k.layers.Layer):
+    '''
+    classdocs
+    '''
+
+    def __init__(self, hidden_dim, original_dim):
+        super(SparseDecoder, self).__init__()
+        self.output_layer = k.layers.Dense(units=original_dim, activation=tf.nn.relu)
+  
+    def call(self, encoded):
+        activation = self.output_layer(encoded)
+        return activation 
+
+
+class SparseAutoencoder(k.Model):
+    '''
+    classdocs
+    '''
+
+    def __init__(self, hidden_dim, original_dim):
+        super(SparseAutoencoder, self).__init__()
+        self.loss = []
+        self.encoder = SparseEncoder(hidden_dim=hidden_dim)
+        self.decoder = SparseDecoder(hidden_dim=hidden_dim, original_dim=original_dim)
+
+    def call(self, input_features):
+        encoded = self.encoder(input_features)
+        reconstructed = self.decoder(encoded)
+        return reconstructed
+
+
 def loss(preds, real):
     return tf.reduce_mean(tf.square(tf.subtract(preds, real)))
 
