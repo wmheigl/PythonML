@@ -1,10 +1,10 @@
 '''
-Created on May 8, 2020
+Created on May 9, 2020
 
 @author: wernerheigl
 '''
 
-import os, sys
+import os
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -40,8 +40,6 @@ def main():
     x_test = np.reshape(x_test, (x_test.shape[0], 784))
     
     training_dataset = tf.data.Dataset.from_tensor_slices(x_train).batch(batch_size)
-    print('training_dataset:', list(tf.data.Dataset.from_tensor_slices(x_train).as_numpy_iterator()).shape())
-    sys.exit()
     
     model = enc.SparseAutoencoder(hidden_dim=hidden_dim, original_dim=original_dim)
     opt = tf.keras.optimizers.Adam(learning_rate=1e-2)
@@ -62,7 +60,7 @@ def main():
         ax.get_yaxis().set_visible(False)
         # display reconstruction
         ax = plt.subplot(2, number, index + 1 + number)
-        plt.imshow(autoencoder(x_test)[index].numpy().reshape(28, 28), cmap='gray')
+        plt.imshow(model(x_test)[index].numpy().reshape(28, 28), cmap='gray')
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)
     plt.show()
