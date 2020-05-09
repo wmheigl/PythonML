@@ -9,19 +9,22 @@ import numpy as np
 import tensorflow as tf
 from unsupervised.restricted_boltzmann_machine.rbm import RestrictedBoltzmannMachine
 
+# this only matters on MacOS
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+
 
 def main():
     
-    (train_data, _), (test_data, _) =  tf.keras.datasets.mnist.load_data()
-    train_data = train_data/np.float32(255)
+    (train_data, _), (test_data, _) = tf.keras.datasets.mnist.load_data()
+    train_data = train_data / np.float32(255)
     train_data = np.reshape(train_data, (train_data.shape[0], 784))
-    test_data = test_data/np.float32(255)
+    test_data = test_data / np.float32(255)
     test_data = np.reshape(test_data, (test_data.shape[0], 784))
 
-    #Size of inputs is the number of inputs in the training set
+    # Size of inputs is the number of inputs in the training set
     input_size = train_data.shape[1]
     rbm = RestrictedBoltzmannMachine(input_size, 200)
-    err = rbm.train(train_data,50)
+    err = rbm.train(train_data, 50)
 
     plt.plot(err)
     plt.xlabel('epochs')
